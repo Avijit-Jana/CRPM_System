@@ -63,6 +63,3 @@ def webapp():
     with tab3:
         st.write('Charts')
 
-
-if __name__ == "__main__":
-    webapp()

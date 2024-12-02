@@ -1,5 +1,4 @@
 import streamlit as st
-from main import *
 import matplotlib
 
 def webapp():
@@ -20,7 +19,7 @@ def webapp():
             st.text_input('Phone Number')
             
         with col2:
-            st.selectbox('Select',['Male','Female','Other'])
+            st.selectbox('Gender',['Male','Female','Other'])
             st.text_input('Email Address')
 
         with col3:
@@ -59,10 +58,3 @@ def webapp():
         with col3:
             st.date_input('Purchase Date')
             st.text_input('Shipping Address')
-
-    with tab3:
-        st.write('Charts')
-
-
-if __name__ == "__main__":
-    webapp()
