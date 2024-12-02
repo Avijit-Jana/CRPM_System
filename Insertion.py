@@ -1,6 +1,5 @@
 import streamlit as st
-from main import *
-import matplotlib
+import matplotlib.pyplot as plt
 
 def webapp():
     with st.sidebar:
@@ -8,24 +7,27 @@ def webapp():
 
     # Create three tabs
     tab1, tab2, tab3 = st.tabs(["Customer", "Product", "Dashboard"])
-    # Add content to the first tab
 
     with tab1:
         st.subheader("Customer Information")
-        # Create two columns of equal width
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.text_input('Customer Name')
-            st.text_input('Phone Number')
+            customer_name = st.text_input('Customer Name')
+            country = st.text_input('Country')
+            purchase_date = st.date_input('Purchase Date')
             
         with col2:
-            st.selectbox('Select',['Male','Female','Other'])
-            st.text_input('Email Address')
+            gender = st.selectbox('Gender',['Male','Female','Other'])
+            state = st.text_input('State')
+            phone = st.text_input('Phone Number')
 
         with col3:
-            st.date_input('Date of Birth')
-            st.text_input('Address')
+            age = st.number_input('Age', min_value=0, max_value=100, step=1)
+            city = st.text_input('City')
+            email = st.text_input('Email')
+
+        address = st.text_area('Address')
         
         # Button CSS
         st.markdown("""
@@ -41,10 +43,17 @@ def webapp():
         }
         </style>
         """, unsafe_allow_html=True)
-        st.button('Submit')
+
+        values = [customer_name, gender, age, country, state, city, purchase_date, phone, email, address]
+        
+        if st.button('Submit'):
+            st.info('Customer Information Submitted')
+            from main import database
+            d = database()
+            d.insert_customer(values)
         
     with tab2:
-        # Create two columns of equal width
+        st.subheader("Product Information")
         col1, col2, col3 = st.columns(3)
 
         # Add content to the first column
@@ -57,10 +66,11 @@ def webapp():
             st.text_input('Order Status')
 
         with col3:
-            st.date_input('Purchase Date')
+            # st.date_input('Purchase Date')
             st.text_input('Shipping Address')
 
     with tab3:
+        st.subheader("Dasboard")
         st.write('Charts')
 
 
