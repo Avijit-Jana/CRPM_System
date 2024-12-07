@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+from main import Database
 
 def webapp():
     with st.sidebar:
@@ -9,13 +10,13 @@ def webapp():
     tab1, tab2 = st.tabs(["Customer", "Product"])
 
     with tab1:
-        st.subheader("Customer Information")
+        st.subheader("Enter Customer Information")
         col1, col2, col3 = st.columns(3)
 
         with col1:
             customer_name = st.text_input('Customer Name', placeholder='e.g. John Doe') 
             country = st.text_input('Country', placeholder='e.g. India')
-            purchase_date = st.date_input('Purchase Date')
+            email = st.text_input('Email', placeholder='e.g. abc@email.com')
             
         with col2:
             gender = st.selectbox('Gender',['Male','Female','Other'])
@@ -25,7 +26,7 @@ def webapp():
         with col3:
             age = st.number_input('Age', min_value=0, max_value=100, step=1)
             city = st.text_input('City', placeholder='e.g. Mumbai')
-            email = st.text_input('Email', placeholder='e.g. abc@email.com')
+            purchase_date = st.date_input('Purchase Date')
 
         address = st.text_area('Address', placeholder='e.g. 123, ABC Road, XYZ Area, Mumbai')
         
@@ -44,35 +45,41 @@ def webapp():
         </style>
         """, unsafe_allow_html=True)
 
-        values = [customer_name, gender, age, country, state, city, purchase_date, phone, email, address]
+        values = [customer_name, gender, age, country, state, city, email, phone, purchase_date, address]
         
         if st.button('Submit', key='customer'):
             st.info('Customer Information Submitted')
             from main import database
-            d = database()
-            d.insert_customer(values)
+            database().insert_customer(values)
         
     with tab2:
-        st.subheader("Product Information")
+        st.subheader("Enter Product Information")
         col1, col2, col3 = st.columns(3)
 
         # Add content to the first column
         with col1:
-            product_name = st.text_input('Product Name')
+            product_id = st.number_input('Product ID', step=1)
             price = st.number_input('Price')
             stock = st.number_input('Stock')
             
         with col2:
+            product_name = st.text_input('Product Name', placeholder='e.g. iPhone 13')
             quantity = st.number_input('Quantity')
-            status = st.text_input('Order Status')
-            shipping_address = st.text_input('Shipping Address').expandtabs()
+            status = st.text_input('Order Status', placeholder='e.g. Delivered')
 
         with col3:
-            order_date = st.date_input('order Date')
-            catagory = st.text_input('Category')
+            order_date = st.date_input('Order Date')
+            catagory = st.text_input('Category', placeholder='e.g. Electronics')
+            order_id = st.number_input('Order ID', step=1)
+
+        product_description = st.text_area('Product Description', placeholder='e.g. This is a product description')
+
+        values1 = [product_id, product_name, quantity, order_date, price, status, catagory, stock, product_description]
 
         if st.button('Submit', key='product'):
             st.info('Product Information Submitted')
+            from main import database
+            database().insert_product(values1)
 
 
 if __name__ == "__main__":
